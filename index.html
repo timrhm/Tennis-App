@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <title>Tennis Team Live-App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#020617" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="app-header">
+      <div>
+        <h1 class="title">🎾 Tennis Liveboard</h1>
+        <p class="subtitle">
+          Matches anlegen, Spielstände pflegen – alle schauen nur noch in die App.
+        </p>
+      </div>
+      <button id="installBtn" class="btn btn-outlined" hidden>Auf Gerät installieren</button>
+    </header>
+
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">Neues Match</h2>
+      </div>
+
+      <form id="matchForm" class="form">
+        <div class="field">
+          <label for="court">Match / Platz</label>
+          <input id="court" type="text" placeholder="z.B. HE1, HD2, Platz 3" required />
+        </div>
+        <div class="field">
+          <label for="playerName">Unser Spieler / Team</label>
+          <input id="playerName" type="text" placeholder="z.B. Spieler 1 / Doppel A" required />
+        </div>
+        <div class="field">
+          <label for="opponentName">Gegner</label>
+          <input id="opponentName" type="text" placeholder="z.B. Gegner 1 / Club XY" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Match hinzufügen</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">Matches & Spielstände</h2>
+        <div class="card-actions">
+          <label class="checkbox">
+            <input type="checkbox" id="filterRunning" />
+            nur laufende
+          </label>
+          <button id="clearBtn" class="btn btn-small btn-ghost">Alles löschen</button>
+        </div>
+      </div>
+
+      <div id="matchesContainer" class="matches">
+        <!-- Matches werden per JS eingefügt -->
+      </div>
+
+      <div id="emptyState" class="empty">Noch keine Matches. Legt oben ein Match an.</div>
+    </section>
+
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">Spieltag-Übersicht</h2>
+      </div>
+      <div id="summary" class="summary">
+        <!-- Wird per JS aktualisiert -->
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
