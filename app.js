@@ -19,23 +19,22 @@ const filterRunningCheckbox = document.getElementById("filterRunning");
 const clearBtn = document.getElementById("clearBtn");
 const installBtn = document.getElementById("installBtn");
 
-// --- Storage ---
-function loadMatches() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return;
-    const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed)) {
-      matches = parsed;
-    }
-  } catch (err) {
-    console.error("Fehler beim Laden:", err);
-  }
+// Aktionen
+
+function syncToCloud() {
+  db.ref("matches").set(matches);
 }
 
-function saveMatches() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(matches));
+function subscribeToCloud() {
+  db.ref("matches").on("value", (snapshot) => {
+    const data = snapshot.val();
+    if (Array.isArray(data)) {
+      matches = data;
+      renderMatches();
+    }
+  });
 }
+
 
 // --- Render-Funktionen ---
 function renderMatches() {
@@ -183,7 +182,7 @@ function addMatch({ court, playerName, opponentName }) {
     createdAt: Date.now(),
   };
   matches.push(match);
-  saveMatches();
+  syncToCloud();
   renderMatches();
 }
 
@@ -204,7 +203,7 @@ function editSets(id) {
   match.set2 = (s2 || "").trim();
   match.set3 = (s3 || "").trim();
 
-  saveMatches();
+  syncToCloud();
   renderMatches();
 }
 
@@ -212,21 +211,21 @@ function toggleStatus(id) {
   const match = matches.find((m) => m.id === id);
   if (!match) return;
   match.status = match.status === "laufend" ? "fertig" : "laufend";
-  saveMatches();
+  syncToCloud();
   renderMatches();
 }
 
 function deleteMatch(id) {
   if (!window.confirm("Match wirklich löschen?")) return;
   matches = matches.filter((m) => m.id !== id);
-  saveMatches();
+  syncToCloud();
   renderMatches();
 }
 
 function clearAll() {
   if (!window.confirm("Alle Matches auf diesem Gerät löschen?")) return;
   matches = [];
-  saveMatches();
+  syncToCloud();
   renderMatches();
 }
 
@@ -275,5 +274,5 @@ if ("serviceWorker" in navigator) {
 }
 
 // --- Init ---
-loadMatches();
+subscribeToCloud();
 renderMatches();

@@ -75,5 +75,30 @@
   </main>
 
   <script src="app.js"></script>
+  <!-- Firebase SDKs laden -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js"></script>
+
+  <!-- Deine Firebase-Konfiguration -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "DEIN_API_KEY",
+      authDomain: "DEIN_AUTH_DOMAIN",
+      databaseURL: "DEINE_DATABASE_URL",
+      projectId: "DEIN_PROJECT_ID",
+      storageBucket: "DEIN_STORAGE_BUCKET",
+      messagingSenderId: "DEIN_SENDER_ID",
+      appId: "DEIN_APP_ID"
+    };
+
+    // Firebase initialisieren
+    firebase.initializeApp(firebaseConfig);
+    // globale Referenz auf Realtime Database
+    const db = firebase.database();
+  </script>
+
+  <!-- Deine App-Logik, die jetzt db benutzen kann -->
+  <script src="app.js"></script>
 </body>
 </html>
+
